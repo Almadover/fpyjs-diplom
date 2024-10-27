@@ -1,43 +1,58 @@
-/**
- * Класс Yandex
- * Используется для управления облаком.
- * Имеет свойство HOST
- * */
 class Yandex {
   static HOST = 'https://cloud-api.yandex.net/v1/disk';
 
   /**
-   * Метод формирования и сохранения токена для Yandex API
-   */
-  static getToken(){
-
-  }
-
-  /**
    * Метод загрузки файла в облако
    */
-  static uploadFile(path, url, callback){
+  static uploadFile(path, url, callback) {
+    const uploadUrl = `${this.HOST}/resources/upload`;
 
+    createRequest({
+      method: 'POST',
+      url: uploadUrl,
+      data: {
+        path: path,
+        url: url
+      },
+      callback: callback
+    });
   }
 
   /**
    * Метод удаления файла из облака
    */
-  static removeFile(path, callback){
+  static removeFile(path, callback) {
+    const removeUrl = `${this.HOST}/resources` + encodeURI(path);
 
+    createRequest({
+      method: 'DELETE',
+      url: removeUrl,
+      callback: callback
+    });
   }
 
   /**
    * Метод получения всех загруженных файлов в облаке
    */
-  static getUploadedFiles(callback){
+  static getUploadedFiles(callback) {
+    const filesUrl = `${this.HOST}/resources/files`;
 
+    createRequest({
+      method: 'GET',
+      url: filesUrl,
+      callback: callback
+    });
   }
 
   /**
    * Метод скачивания файлов
    */
-  static downloadFileByUrl(url){
-
+  static downloadFileByUrl(url) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = ''; // Устанавливаем имя файла
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link); // Удаляем ссылку после скачивания
   }
 }

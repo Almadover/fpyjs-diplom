@@ -1,19 +1,29 @@
-/**
- * Класс SearchBlock
- * Используется для взаимодействием со строкой ввода и поиска изображений
- * */
 class SearchBlock {
   constructor( element ) {
-
+    this.element = element;
+    this.registerEvents();
   }
 
-  /**
-   * Выполняет подписку на кнопки "Заменить" и "Добавить"
-   * Клик по кнопкам выполняет запрос на получение изображений и отрисовывает их,
-   * только клик по кнопке "Заменить" перед отрисовкой очищает все отрисованные ранее изображения
-   */
   registerEvents(){
+    const replaceButton = this.element.querySelector('.replace');
+    const addButton = this.element.querySelector('.add');
+    const input = this.element.querySelector('input');
 
+    replaceButton.addEventListener('click', () => {
+      if(input.value.trim() === '') return;
+      
+      VK.get(input.value.trim(), (images) => {
+        App.clearImages();
+        App.renderImages(images);
+      });
+    });
+
+    addButton.addEventListener('click', () => {
+      if(input.value.trim() === '') return;
+
+      VK.get(input.value.trim(), (images) => {
+        App.renderImages(images);
+      });
+    });
   }
-
 }

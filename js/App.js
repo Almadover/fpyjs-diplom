@@ -32,4 +32,19 @@ class App {
   static getModal(name) {
     return this.modals[name];
   }
+  static clearImages() {
+    const imagesList = document.querySelector('.images-list .row');
+    imagesList.innerHTML = ''; // Очистить блок с изображениями
+  }
+
+  static renderImages(images) {
+    const imagesList = document.querySelector('.images-list .row');
+    
+    images.forEach(image => {
+      const imgElement = document.createElement('img');
+      imgElement.setAttribute('src', image);
+      imgElement.classList.add('selected');
+      imagesList.appendChild(imgElement); // Добавить изображение в блок
+    });
+  }
 }
